@@ -9,7 +9,7 @@
                 <input v-model="numeroIdentificación"  type="number" name="NumeroIdentificación" placeholder="Numero Identificación" class="form-control">
 
                 <!-- Botón para añadir -->
-                <input @click="AddUser()" type="button" value="Añadir" class="btn btn-success">
+                <input @click="AddUser()" type="button" value="Añadir" class="btn btn-info">
             </form>
         </div>
         <div>
@@ -58,13 +58,13 @@
                    </span>
             </td>
             <td> 
-            <button v-show="idEdit == index" type="button" class="btn btn-primary" @click="SaveUser(index)">Guardar</button>
+            <button v-show="idEdit == index" type="button" class="btn btn-success" @click="SaveUser(index)">Guardar</button>
             </td>
             <td> 
-            <button v-show="idEdit != index" type="button" class="btn btn-primary" @click="edit(index)">edit</button>
+            <button v-show="idEdit != index" type="button" class="btn btn-warning" @click="edit(index)">Editar</button>
             </td>
             <td>
-             <button v-show="idEdit != index" type="button" class="btn btn-primary" @click="DeleteUser(item.IdUsuario)">Eliminar</button>
+             <button v-show="idEdit != index" type="button" class="btn btn-danger" @click="DeleteUser(item.IdUsuario)">Eliminar</button>
              </td>
           </tr> 
         </tbody>
