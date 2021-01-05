@@ -24,9 +24,9 @@ export default new Vuex.Store({
         });
        },
        AddUsuarios({commit, dispatch},data){
-         const json = JSON.stringify(data);
         return new Promise((resolve, reject) => {
-          axios.post('https://localhost:44377/Api/AddUsuario',json)
+          axios.post('https://localhost:44377/Api/AddUsuario?Nombre='+data.Nombre+"&Apellido="+ data.Apellidos+
+          "&Email="+data.Email+"&Numeroidentificacion="+data.Numeroidentificacion)
             .then((response)  =>  {
               resolve(response);
             })
@@ -36,6 +36,31 @@ export default new Vuex.Store({
             });;
           });
          },
+         SaveUsuario({commit, dispatch},data){
+          return new Promise((resolve, reject) => {
+            axios.post('https://localhost:44377/Api/SaveUsuario?ID='+data.IdUsuario+"&Nombre="+data.Nombre+"&Apellido="+ data.Apellidos+
+            "&Email="+data.Email+"&Numeroidentificacion="+data.Numeroidentificacion)
+              .then((response)  =>  {
+                resolve(response);
+              })
+              .catch(error => {
+                console.log(error)
+                reject(error);
+              });;
+            });
+           },
+           DeleteUsuario({commit, dispatch},id){
+            return new Promise((resolve, reject) => {
+              axios.post('https://localhost:44377/Api/DeleteUsuario?id='+id)
+                .then((response)  =>  {
+                  resolve(response);
+                })
+                .catch(error => {
+                  console.log(error)
+                  reject(error);
+                });;
+              });
+             },
 },
   modules: {
   }

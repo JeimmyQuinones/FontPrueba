@@ -13,7 +13,7 @@
             </form>
         </div>
         <div>
-       <table class="table" >
+       <table id="tabla" class="table" >
         <thead>
           <tr>
             <th scope="col">Nombre</th>
@@ -24,12 +24,48 @@
         </thead>
         <tbody>
           <tr v-for="(item, index) in User" :key="index">
-            <td v-text="item.Nombre"></td>
-            <td v-text="item.Apellidos"></td>
-            <td v-text="item.Email"></td>
-            <td v-text="item.Numeroidentificacion"></td>
-            <td> <button type="button" class="btn btn-primary">edit</button></td>
-            <td> <button type="button" class="btn btn-primary">Eliminar</button></td>
+            <td >
+              <span v-show="idEdit == index">
+                <input  v-model="nombreedit" type="text" class="form-control">
+              </span>
+              <span v-show="idEdit != index">
+               {{item.Nombre}}
+              </span>
+                </td>
+
+            <td >
+                <span v-show="idEdit == index">
+                    <input  v-model="apellidoedit" type="text" class="form-control">
+                  </span>
+                  <span v-show="idEdit != index">
+                  {{item.Apellidos}}
+                </span>
+            </td>
+            <td >
+                   <span v-show="idEdit == index">
+                    <input  v-model="emailedit" type="text" class="form-control">
+                  </span>
+                  <span v-show="idEdit != index">
+                  {{item.Email}}
+                   </span>
+            </td>
+            <td >
+                   <span v-show="idEdit == index">
+                    <input  v-model="numeroIdentificaciónedit" type="text" class="form-control">
+                  </span>
+                  <span v-show="idEdit != index">
+                  {{item.Numeroidentificacion}}
+                   </span>
+            </td>
+            <td> 
+            <button v-show="idEdit == index" type="button" class="btn btn-primary" @click="SaveUser(index)">Guardar</button>
+            </td>
+            <td> 
+            <button v-show="idEdit != index" type="button" class="btn btn-primary" @click="edit(index)">edit</button>
+            </td>
+            <td>
+             <button v-show="idEdit != index" type="button" class="btn btn-primary" @click="DeleteUser(item.IdUsuario)">Eliminar</button>
+             </td>
           </tr> 
         </tbody>
       </table>
@@ -51,9 +87,15 @@ export default {
     return{
       User:[],
       nombre:"",
+      nombreedit:"",
       apellido:"",
+      apellidoedit:"",
       email:"",
+      emailedit:"",
       numeroIdentificación:"",
+      numeroIdentificaciónedit:"",
+      idEdit:-1,
+      
     }
     
   },
@@ -80,6 +122,45 @@ export default {
                       
                       console.log(data.data);
       }); 
+    },
+    SaveUser(index){
+      var id= this.User[index].IdUsuario;
+       var data={
+                    "IdUsuario": id,
+                    "Nombre": this.nombreedit,
+                    "Apellidos": this.apellidoedit,
+                    "Numeroidentificacion": parseInt(this.numeroIdentificaciónedit),
+                    "Email": this.emailedit
+                };
+                console.log(data);
+                this.$store.dispatch('SaveUsuario',data).then( data => {
+                      console.log(data.data);
+                      this.idEdit = -1;
+                      this.$store.dispatch('getUsuarios').then( dat=> {
+                        this.User= [];
+                      this.User= dat.dat;
+                        }); 
+      }); 
+      
+
+    },
+    DeleteUser(index){
+      
+                this.$store.dispatch('DeleteUsuario',index).then( data => {
+                      console.log(data.data);
+                      this.$store.dispatch('getUsuarios').then( dat=> {
+                        this.User= [];
+                      this.User= dat.dat;
+                        }); 
+      }); 
+    },
+    edit(index){
+      this.nombreedit= this.User[index].Nombre;
+      this.apellidoedit= this.User[index].Apellidos;
+      this.emailedit= this.User[index].Email;
+      this.numeroIdentificaciónedit= this.User[index].Numeroidentificacion;
+      this.idEdit = index;
+
     }
   },
 
