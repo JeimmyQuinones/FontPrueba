@@ -110,7 +110,42 @@ export default {
         return "usuarios";
     },
     AddUser(){
-       var data={
+      var error =0;
+      if (this.nombre=="")
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+      if (this.apellido=="")
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+      if (this.email=="")
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+      if (parseInt(this.numeroIdentificación)==0)
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+      if (this.numeroIdentificación=="")
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+       var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
+            if (!regex.test(this.email)) 
+              {
+                alert("Correo invalido");
+                error++;
+              }
+              if(error==0)
+              {
+            var data={
                     "IdUsuario": -1,
                     "Nombre": this.nombre,
                     "Apellidos": this.apellido,
@@ -121,26 +156,66 @@ export default {
                 this.$store.dispatch('AddUsuarios',data).then( data => {
                       
                       console.log(data.data);
-      }); 
+                       }); 
+              }
+       
+     
     },
     SaveUser(index){
       var id= this.User[index].IdUsuario;
-       var data={
-                    "IdUsuario": id,
-                    "Nombre": this.nombreedit,
-                    "Apellidos": this.apellidoedit,
-                    "Numeroidentificacion": parseInt(this.numeroIdentificaciónedit),
-                    "Email": this.emailedit
-                };
-                console.log(data);
-                this.$store.dispatch('SaveUsuario',data).then( data => {
-                      console.log(data.data);
-                      this.idEdit = -1;
-                      this.$store.dispatch('getUsuarios').then( dat=> {
-                        this.User= [];
-                      this.User= dat.dat;
-                        }); 
-      }); 
+      var error =0;
+      if (this.nombreedit=="")
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+      if (this.apellidoedit=="")
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+      if (this.emailedit=="")
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+      if (parseInt(this.numeroIdentificaciónedit)==0)
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+      if (this.numeroIdentificaciónedit=="")
+      {
+        alert("El campo no puede estar vacio");
+        error++;
+      }
+       var regex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+
+            if (!regex.test(this.emailedit)) 
+              {
+                alert("Correo invalido");
+                error++;
+              }
+      
+                if (error==0){
+            var data={
+                                "IdUsuario": id,
+                                "Nombre": this.nombreedit,
+                                "Apellidos": this.apellidoedit,
+                                "Numeroidentificacion": parseInt(this.numeroIdentificaciónedit),
+                                "Email": this.emailedit
+                            };
+                            console.log(data);
+                            this.$store.dispatch('SaveUsuario',data).then( data => {
+                                  console.log(data.data);
+                                  this.idEdit = -1;
+                                  this.$store.dispatch('getUsuarios').then( dat=> {
+                                    this.User= [];
+                                  this.User= dat.dat;
+                                    }); 
+                  }); 
+                } 
+       
       
 
     },
